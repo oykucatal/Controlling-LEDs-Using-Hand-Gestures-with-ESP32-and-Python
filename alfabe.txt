@@ -1,0 +1,34 @@
+Harf	Kod (decimal)	Parmak kombinasyonu (T I M R P)
+A	0	00000
+B	1	00001
+C	2	00010
+D	3	00011
+E	4	00100
+F	5	00101
+G	6	00110
+H	7	00111
+I	8	01000
+J	9	01001
+K	10	01010
+L	11	01011
+M	12	01100
+N	13	01101
+O	14	01110
+P	15	01111
+Q	16	10000
+R	17	10001
+S	18	10010
+T	19	10011
+U	20	10100
+V	21	10101
+W	22	10110
+X	23	10111
+Y	24	11000
+Z	25	11001
+
+26	11010	Boşluk (Space)
+27	11011	Sil (Backspace)
+28	11100	Temizle (Clear)
+29	11101	Enter (Kelimeyi yaz & sıfırla)
+ 0 lar açık parmak 
+1ler kapal armak

@@ -1,0 +1,24 @@
+# Python
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+*.log
+*.tmp
+
+# Sanal ortamlar
+.venv/
+venv/
+env/
+
+# IDE/Editor
+.vscode/
+.idea/
+*.code-workspace
+
+# Sistem
+.DS_Store
+Thumbs.db
+
+# Jupyter
+.ipynb_checkpoints/
