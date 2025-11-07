@@ -1,0 +1,177 @@
+Controlling LEDs Using Hand Gestures with ESP32 and Python
+1. Project Purpose
+
+This project was developed to control LEDs using hand gestures detected by a web camera.
+The main goal is to make the system understand the number of fingers shown by the user and send this information to the ESP32 microcontroller, which turns LEDs on or off accordingly.
+
+The project combines computer vision (image processing with Python) and IoT hardware control (ESP32) to demonstrate real-time interaction between a computer and a microcontroller.
+
+2. General Working Principle
+
+The working logic can be summarized in five main steps:
+
+Camera Detection:
+The webcam continuously captures the user's hand image.
+
+Hand Recognition:
+The Python program uses MediaPipe library to detect the hand and analyze finger landmarks (joint positions).
+
+Finger Counting:
+According to the detected hand landmarks, the program determines which fingers are open or closed.
+For example:
+
+Only index finger open → count = 1
+
+Index and middle finger open → count = 2
+
+Data Transmission to ESP32:
+After the gesture is detected, the number of raised fingers is sent to the ESP32 using serial communication (UART) or HTTP requests.
+
+LED Control:
+The ESP32 receives the number and turns on the LEDs accordingly.
+Each LED represents one finger.
+
+3. Hardware Components
+Component	Description
+ESP32 DevKitC	Main controller that receives commands from the computer and controls LEDs
+Webcam	Captures the hand movements in real-time
+LEDs (x5)	Indicate which fingers are detected as open
+Resistors (220Ω)	Limit current flow to LEDs
+Breadboard	Used for assembling the circuit
+Jumper wires	Connections between components
+4. Circuit Connection
+
+Each LED is connected to one GPIO pin on the ESP32.
+You can use the following pin setup:
+
+Finger	GPIO Pin	Description
+Thumb	D2	Controls LED1
+Index	D4	Controls LED2
+Middle	D5	Controls LED3
+Ring	D18	Controls LED4
+Pinky	D19	Controls LED5
+
+Circuit Notes:
+
+Each LED must be connected in series with a resistor.
+
+The shorter leg of the LED (cathode) should be connected to GND.
+
+ESP32 should be powered via USB during operation.
+
+5. Software Requirements
+
+Languages and Tools Used:
+
+Python 3.9 or newer
+
+Arduino IDE
+
+ESP32 board package (installed in Arduino IDE)
+
+MediaPipe and OpenCV libraries
+
+Python Libraries:
+
+pip install opencv-python mediapipe pyserial numpy
+
+6. File Structure
+Controlling-LEDs-Using-Hand-Gestures-with-ESP32-and-Python/
+│
+├── ledproject/                # ESP32 code (Arduino sketch)
+│   └── ledproject.ino
+│
+├── alphabet_gesture.py        # Main gesture detection and LED command sender
+├── python_code.py             # Python script for serial communication
+├── hand_cam.py                # Camera and hand tracking test
+├── test_cam.py                # Camera-only testing file
+├── alfabe.txt                 # Gesture codes (used for reference)
+├── Circuit.png                # Circuit diagram image
+└── README.md                  # Project documentation
+
+7. ESP32 Setup (Arduino IDE)
+
+Open Arduino IDE
+
+Go to File → Preferences
+Add the following URL to Additional Boards Manager URLs:
+
+https://dl.espressif.com/dl/package_esp32_index.json
+
+
+From Tools → Board → Board Manager, install “ESP32 by Espressif Systems”.
+
+Select your board: ESP32 Dev Module
+
+Select your COM port under Tools → Port
+
+Open the ledproject.ino file
+
+Upload the code to the ESP32.
+
+8. Python Program Explanation
+a) Hand Detection and Finger Counting
+
+The Python file uses MediaPipe’s Hand Tracking module.
+This detects 21 landmark points on the hand (fingertips and joints).
+By comparing their positions, the program decides which fingers are open.
+
+b) Serial Communication
+
+After determining how many fingers are open, the program sends that number to ESP32 through serial port.
+Example:
+
+data = str(finger_count)
+arduino.write(data.encode())
+
+c) LED Behavior on ESP32
+
+The ESP32 reads the incoming data:
+
+if (data == '3') {
+  digitalWrite(led1, HIGH);
+  digitalWrite(led2, HIGH);
+  digitalWrite(led3, HIGH);
+  digitalWrite(led4, LOW);
+  digitalWrite(led5, LOW);
+}
+
+
+This means: if 3 fingers are detected, 3 LEDs light up.
+
+9. Example Operation
+Gesture	Finger Count	LED Pattern	Description
+✊	0	All OFF	No finger detected
+☝️	1	LED1 ON	One finger open
+✌️	2	LED1–LED2 ON	Two fingers open
+🤟	3	LED1–LED3 ON	Three fingers open
+🖐️	5	All ON	All fingers open
+10. Common Problems & Solutions
+Problem	Cause	Solution
+Camera doesn’t open	Another app using it	Close other apps and restart script
+ESP32 not responding	Wrong COM port	Check port number in Device Manager
+LEDs flicker randomly	No serial delay	Add small delay(100) in Arduino loop
+Hand not detected	Bad lighting	Use brighter environment
+11. Future Development Ideas
+
+Add Wi-Fi communication instead of USB serial
+
+Control more devices (e.g. motor, servo)
+
+Create gesture-to-letter translator (A–Z)
+
+Design GUI interface for gesture visualization
+
+Add voice feedback (e.g. “Two fingers detected!”)
+
+12. Credits
+
+Author: Öykü Çatal
+University: Istanbul Atlas University
+Department: Software Engineering
+This project was developed for learning purposes to combine image processing and embedded systems.
+
+13. License
+
+This project is released under the MIT License.
+You may freely use, modify, and share it with proper credit.
